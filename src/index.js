@@ -26,6 +26,23 @@ function processWeatherData(data) {
   };
 }
 
+function displayWeatherData(data) {
+  const temperatureDisplay = document.getElementById("temperature");
+  temperatureDisplay.textContent = data.temperature;
+
+  const locationDisplay = document.getElementById("location");
+  locationDisplay.textContent = data.location;
+
+  const conditionsDisplay = document.getElementById("conditions");
+  conditionsDisplay.textContent = data.conditions;
+
+  const humidityDisplay = document.getElementById("humidity");
+  humidityDisplay.textContent = data.humidity;
+
+  const feelsLikeDisplay = document.getElementById("feels-like");
+  feelsLikeDisplay.textContent = data["feels like"];
+}
+
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -34,7 +51,10 @@ form.addEventListener("submit", (e) => {
   const location = search.value.toLowerCase().trim();
 
   getWeatherData(location, "uk").then(
-    (data) => console.log(processWeatherData(data)),
-    (error) => console.log(error),
+    (data) => displayWeatherData(processWeatherData(data)),
+    (error) => alert(error),
   );
 });
+
+// TODO: need button to change temperature - will probably use the current location
+// or the location in the search bar if no location is currently chosen
