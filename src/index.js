@@ -19,15 +19,22 @@ async function getWeatherData(location, unitGroup) {
 function processWeatherData(data) {
   return {
     location: data.resolvedAddress,
-    temperatue: data.currentConditions.temp,
+    temperature: data.currentConditions.temp,
     "feels like": data.currentConditions.feelslike,
     humidity: data.currentConditions.humidity,
     conditions: data.currentConditions.conditions,
   };
 }
 
-getWeatherData("london", "uk")
-  .catch((error) => {
-    console.log(error);
-  })
-  .then((data) => console.log(processWeatherData(data)));
+const form = document.querySelector("form");
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const search = document.getElementById("location-search");
+  const location = search.value.toLowerCase().trim();
+
+  getWeatherData(location, "uk").then(
+    (data) => console.log(processWeatherData(data)),
+    (error) => console.log(error),
+  );
+});
