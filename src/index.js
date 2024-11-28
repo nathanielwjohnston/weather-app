@@ -1,5 +1,7 @@
 import "./styles.css";
 
+let currentLocation;
+
 async function getWeatherData(location, unitGroup) {
   const weatherData = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unitGroup}&elements=datetime%2Ctemp%2Cfeelslike%2Chumidity%2Cconditions&include=current&key=J34LGPNZGQ95XYK8YUGDAAGSY&contentType=json`,
@@ -50,10 +52,43 @@ form.addEventListener("submit", (e) => {
   const search = document.getElementById("location-search");
   const location = search.value.toLowerCase().trim();
 
-  getWeatherData(location, "uk").then(
-    (data) => displayWeatherData(processWeatherData(data)),
+  const temperatureUnitButton = document.getElementById(
+    "temperature-unit-selector",
+  );
+  const temperatureUnit = temperatureUnitButton.dataset.unit;
+
+  getWeatherData(location, temperatureUnit).then(
+    (data) => {
+      currentLocation = location;
+      displayWeatherData(processWeatherData(data));
+    },
     (error) => alert(error),
   );
+});
+
+const temperatureUnitButton = document.getElementById(
+  "temperature-unit-selector",
+);
+temperatureUnitButton.addEventListener("click", () => {
+  const temperatureUnit = temperatureUnitButton.dataset.unit;
+
+  if (temperatureUnit === "uk") {
+    temperatureUnitButton.dataset.unit = "us";
+    temperatureUnitButton.textContent = "F";
+  } else if (temperatureUnit === "us") {
+    temperatureUnitButton.dataset.unit = "uk";
+    temperatureUnitButton.textContent = "C";
+  }
+
+  // check if there is a location currently being displayed
+  if (currentLocation) {
+    getWeatherData(currentLocation, temperatureUnitButton.dataset.unit).then(
+      (data) => {
+        displayWeatherData(processWeatherData(data));
+      },
+      (error) => alert(error),
+    );
+  }
 });
 
 // TODO: need button to change temperature - will probably use the current location
