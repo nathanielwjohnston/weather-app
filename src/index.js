@@ -22,27 +22,21 @@ function processWeatherData(data) {
   return {
     location: data.resolvedAddress,
     temperature: data.currentConditions.temp,
-    "feels like": data.currentConditions.feelslike,
+    "feels-like": data.currentConditions.feelslike,
     humidity: data.currentConditions.humidity,
     conditions: data.currentConditions.conditions,
   };
 }
 
 function displayWeatherData(data) {
-  const temperatureDisplay = document.getElementById("temperature");
-  temperatureDisplay.textContent = data.temperature;
+  function changeDisplayElement(dataPoint) {
+    const display = document.getElementById(dataPoint);
+    display.textContent = data[dataPoint];
+  }
 
-  const locationDisplay = document.getElementById("location");
-  locationDisplay.textContent = data.location;
-
-  const conditionsDisplay = document.getElementById("conditions");
-  conditionsDisplay.textContent = data.conditions;
-
-  const humidityDisplay = document.getElementById("humidity");
-  humidityDisplay.textContent = data.humidity;
-
-  const feelsLikeDisplay = document.getElementById("feels-like");
-  feelsLikeDisplay.textContent = data["feels like"];
+  for (let dataPoint in data) {
+    changeDisplayElement(dataPoint);
+  }
 }
 
 const form = document.querySelector("form");
@@ -90,6 +84,3 @@ temperatureUnitButton.addEventListener("click", () => {
     );
   }
 });
-
-// TODO: need button to change temperature - will probably use the current location
-// or the location in the search bar if no location is currently chosen
