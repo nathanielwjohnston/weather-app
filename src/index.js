@@ -37,6 +37,24 @@ function displayWeatherData(data) {
   for (let dataPoint in data) {
     changeDisplayElement(dataPoint);
   }
+
+  const displayContainer = document.getElementById("weather-display");
+  displayContainer.style.display = "block";
+
+  const temperatureUnitButton = document.getElementById(
+    "temperature-unit-selector",
+  );
+  const temperatureUnit = temperatureUnitButton.dataset.unit;
+  const unitDisplays = document.querySelectorAll(".temperature-unit-display");
+  if (temperatureUnit === "uk") {
+    unitDisplays.forEach((display) => {
+      display.textContent = "C";
+    });
+  } else if (temperatureUnit === "us") {
+    unitDisplays.forEach((display) => {
+      display.textContent = "F";
+    });
+  }
 }
 
 const form = document.querySelector("form");
@@ -68,10 +86,10 @@ temperatureUnitButton.addEventListener("click", () => {
 
   if (temperatureUnit === "uk") {
     temperatureUnitButton.dataset.unit = "us";
-    temperatureUnitButton.textContent = "F";
+    temperatureUnitButton.textContent = "Unit: F";
   } else if (temperatureUnit === "us") {
     temperatureUnitButton.dataset.unit = "uk";
-    temperatureUnitButton.textContent = "C";
+    temperatureUnitButton.textContent = "Unit: C";
   }
 
   // check if there is a location currently being displayed
