@@ -39,6 +39,9 @@ function changeBackgroundColour(temperature, unit) {
   if (temperature < 12 || temperature > 17) {
     label.style.color = "white";
     weatherDisplay.style.color = "white";
+  } else {
+    label.style.color = "black";
+    weatherDisplay.style.color = "black";
   }
   const background = document.querySelector("body");
 
