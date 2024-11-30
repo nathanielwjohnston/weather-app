@@ -66,6 +66,7 @@ body {
   text-align: left;
   grid-column: 1 / 3;
   display: none;
+  color: black;
 }
 
 button {

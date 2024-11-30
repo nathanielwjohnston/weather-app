@@ -28,6 +28,35 @@ function processWeatherData(data) {
   };
 }
 
+function changeBackgroundColour(temperature, unit) {
+  if (unit === "us") {
+    temperature = (temperature - 32) * (5 / 9);
+  }
+
+  const label = document.querySelector('label[for="location-search"]');
+  const weatherDisplay = document.getElementById("weather-display");
+
+  if (temperature < 12 || temperature > 17) {
+    label.style.color = "white";
+    weatherDisplay.style.color = "white";
+  }
+  const background = document.querySelector("body");
+
+  switch (true) {
+    case temperature >= 12:
+      background.style.backgroundColor = `hsl(${55 - (temperature - 12) * 5},95%,52%)`;
+      break;
+    case temperature >= 23:
+      background.style.backgroundColor = `hsl(${0},95%,52%)`;
+      break;
+    case temperature <= 1:
+      background.style.backgroundColor = `hsl(${240},95%,52%)`;
+      break;
+    default:
+      background.style.backgroundColor = `hsl(${185 - (temperature - 12) * 5},95%,52%)`;
+  }
+}
+
 function displayWeatherData(data) {
   function changeDisplayElement(dataPoint) {
     const display = document.getElementById(dataPoint);
@@ -55,6 +84,8 @@ function displayWeatherData(data) {
       display.textContent = "F";
     });
   }
+
+  changeBackgroundColour(data.temperature, temperatureUnit);
 }
 
 const form = document.querySelector("form");
