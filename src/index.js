@@ -63,6 +63,8 @@ function displayWeatherData(data) {
     display.textContent = data[dataPoint];
   }
 
+  removeLoadingComponent();
+
   for (let dataPoint in data) {
     changeDisplayElement(dataPoint);
   }
@@ -88,6 +90,26 @@ function displayWeatherData(data) {
   changeBackgroundColour(data.temperature, temperatureUnit);
 }
 
+function displayLoadingComponent() {
+  removeLoadingComponent();
+  const loading = document.createElement("div");
+  loading.id = "loading";
+  loading.appendChild(document.createTextNode("Loading..."));
+
+  const display = document.getElementById("weather-display");
+  display.style.display = "none";
+
+  const container = document.getElementById("info-container");
+  container.appendChild(loading);
+}
+
+function removeLoadingComponent() {
+  const loading = document.getElementById("loading");
+  if (loading) {
+    loading.remove();
+  }
+}
+
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -99,6 +121,8 @@ form.addEventListener("submit", (e) => {
     "temperature-unit-selector",
   );
   const temperatureUnit = temperatureUnitButton.dataset.unit;
+
+  displayLoadingComponent();
 
   getWeatherData(location, temperatureUnit).then(
     (data) => {

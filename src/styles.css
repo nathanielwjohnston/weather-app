@@ -76,3 +76,8 @@ button {
 #temperature-unit-selector {
   width: 5em;
 }
+
+#loading {
+  grid-column: 1 / 3;
+  text-align: center;
+}
